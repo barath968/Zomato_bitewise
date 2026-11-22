@@ -304,9 +304,29 @@ Do not deploy Streamlit to Vercel. If you need a hosted Streamlit backup, use Ra
 
 ---
 
+## 8.1 GitHub deployment verification
+
+GitHub does **not** show Railway’s internal “SUCCESS” by default. This repo adds:
+
+- Workflow: `.github/workflows/verify-railway-deploy.yml`
+- On every push to `main`, it probes `https://zomatobitewise-production.up.railway.app/health`
+- Creates a GitHub **Deployment** for environment `production` and marks it success/failure
+- `/health` also returns `git_commit` (from `RAILWAY_GIT_COMMIT_SHA`) when Railway injects it
+
+**Where to look on GitHub after a push:**
+
+1. Repo → **Actions** → workflow **Verify Railway Deploy**
+2. Commit page → green check / **Checks**
+3. Repo → **Environments** → `production` (or **Deployments**)
+
+Optional in Railway: enable **Wait for CI** so Railway deploys only after GitHub checks pass (Service Settings → Wait for CI). Note: that can deadlock if the only check waits for Railway to be healthy first — keep this verify workflow as a *post-deploy* check, or add a separate fast lint/test workflow for Wait for CI.
+
+---
+
 ## 9. Acceptance criteria (production)
 
 - [ ] `GET https://<railway>/health` → `status: "ok"`, `restaurant_count > 0`
+- [ ] GitHub Actions **Verify Railway Deploy** is green on `main`
 - [ ] `POST /recommend` returns schema-valid JSON with explanations (or structured empty)
 - [ ] Vercel UI loads dark BiteWise theme; form submits successfully
 - [ ] Empty / error / loading states work against the live API

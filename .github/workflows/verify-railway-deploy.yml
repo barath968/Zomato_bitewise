@@ -1,0 +1,115 @@
+name: Verify Railway Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Lets this check appear on the commit + Environments UI
+permissions:
+  contents: read
+  checks: write
+  deployments: write
+
+env:
+  API_BASE_URL: https://zomatobitewise-production.up.railway.app
+
+jobs:
+  verify-production:
+    name: Railway production health
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://zomatobitewise-production.up.railway.app
+    steps:
+      - name: Create GitHub deployment
+        id: deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: "production",
+              auto_merge: false,
+              required_contexts: [],
+              description: "Verify Railway BiteWise API",
+              production_environment: true,
+            });
+            if (deployment.status === 202 || !deployment.data?.id) {
+              core.setFailed(`Deployment not created: HTTP ${deployment.status}`);
+              return;
+            }
+            core.setOutput("deployment_id", String(deployment.data.id));
+
+      - name: Wait for Railway /health
+        id: health
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA="${GITHUB_SHA}"
+          echo "Expecting commit: ${EXPECTED_SHA}"
+          echo "Probing: ${API_BASE_URL}/health"
+
+          OK=0
+          for i in $(seq 1 36); do
+            CODE=$(curl -sS -o /tmp/health.json -w "%{http_code}" \
+              "${API_BASE_URL}/health" || echo "000")
+            echo "Attempt ${i}: HTTP ${CODE}"
+            if [ "${CODE}" = "200" ]; then
+              cat /tmp/health.json
+              echo
+              STATUS=$(python3 -c "import json; print(json.load(open('/tmp/health.json')).get('status',''))")
+              COMMIT=$(python3 -c "import json; print(json.load(open('/tmp/health.json')).get('git_commit') or '')")
+              COUNT=$(python3 -c "import json; print(json.load(open('/tmp/health.json')).get('restaurant_count') or 0)")
+              if [ "${STATUS}" = "ok" ] && [ "${COUNT}" -gt 0 ]; then
+                # Prefer SHA match when Railway exposes it; otherwise accept healthy API.
+                if [ -n "${COMMIT}" ] && [ "${COMMIT}" != "${EXPECTED_SHA}" ]; then
+                  echo "Healthy but commit mismatch (live=${COMMIT}). Waiting for new deploy..."
+                else
+                  echo "health_ok=true" >> "$GITHUB_OUTPUT"
+                  echo "live_commit=${COMMIT:-unknown}" >> "$GITHUB_OUTPUT"
+                  echo "restaurant_count=${COUNT}" >> "$GITHUB_OUTPUT"
+                  OK=1
+                  break
+                fi
+              fi
+            fi
+            sleep 10
+          done
+
+          if [ "${OK}" != "1" ]; then
+            echo "Railway production did not become healthy in time."
+            exit 1
+          fi
+
+      - name: Mark deployment success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: Number("${{ steps.deployment.outputs.deployment_id }}"),
+              state: "success",
+              environment: "production",
+              environment_url: "${{ env.API_BASE_URL }}",
+              description: "Railway /health ok (${{ steps.health.outputs.restaurant_count }} restaurants)",
+              log_url: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+            });
+
+      - name: Mark deployment failure
+        if: failure() && steps.deployment.outputs.deployment_id
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: Number("${{ steps.deployment.outputs.deployment_id }}"),
+              state: "failure",
+              environment: "production",
+              description: "Railway /health verification failed",
+              log_url: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+            });

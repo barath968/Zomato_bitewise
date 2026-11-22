@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from contextlib import asynccontextmanager
 from typing import Any, Literal
 
@@ -60,6 +61,21 @@ class HealthResponse(BaseModel):
     dry_run: bool = False
     has_llm_key: bool = False
     detail: str | None = None
+    git_commit: str | None = None
+    railway_environment: str | None = None
+
+
+def _runtime_commit() -> str | None:
+    """Commit SHA injected by Railway on GitHub-triggered deploys."""
+    for key in (
+        "RAILWAY_GIT_COMMIT_SHA",
+        "RAILWAY_GIT_COMMIT",
+        "GIT_COMMIT_SHA",
+    ):
+        value = os.getenv(key, "").strip()
+        if value:
+            return value
+    return None
 
 
 _BUDGET_LABELS = {
@@ -117,6 +133,10 @@ def create_app() -> FastAPI:
 
     @app.get("/health", response_model=HealthResponse)
     def health() -> HealthResponse:
+        commit = _runtime_commit()
+        env_name = os.getenv("RAILWAY_ENVIRONMENT_NAME") or os.getenv(
+            "RAILWAY_ENVIRONMENT"
+        )
         if _df is None:
             return HealthResponse(
                 status="degraded",
@@ -124,6 +144,8 @@ def create_app() -> FastAPI:
                 dry_run=bool(settings.llm_dry_run),
                 has_llm_key=bool(settings.has_llm_api_key),
                 detail=_load_error,
+                git_commit=commit,
+                railway_environment=env_name,
             )
         return HealthResponse(
             status="ok",
@@ -131,6 +153,8 @@ def create_app() -> FastAPI:
             model=settings.llm_model,
             dry_run=bool(settings.llm_dry_run),
             has_llm_key=bool(settings.has_llm_api_key),
+            git_commit=commit,
+            railway_environment=env_name,
         )
 
     @app.get("/options", response_model=OptionsResponse)
