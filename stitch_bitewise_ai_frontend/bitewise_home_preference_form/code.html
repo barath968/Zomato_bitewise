@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary":"#472a00","error":"#ffb4ab","on-background":"#e2e2e6","inverse-primary":"#bb162c","primary-fixed":"#ffdad8","primary-container":"#ff535a","inverse-surface":"#e2e2e6","on-primary-fixed":"#410007","surface-bright":"#37393d","on-tertiary-fixed":"#00201e","secondary-fixed-dim":"#ffb95f","outline":"#ab8987","surface-container-lowest":"#0c0e11","on-tertiary-container":"#00302d","surface-dim":"#111317","primary":"#ffb3b1","secondary":"#ffb95f","primary-fixed-dim":"#ffb3b1","on-secondary-fixed":"#2a1700","on-error-container":"#ffdad6","surface":"#111317","surface-variant":"#333538","on-error":"#690005","tertiary-container":"#32a099","on-surface":"#e2e2e6","surface-container-high":"#282a2d","on-primary":"#680011","on-tertiary-fixed-variant":"#00504c","on-secondary-container":"#5b3800","tertiary-fixed-dim":"#71d7cf","surface-tint":"#ffb3b1","tertiary":"#71d7cf","error-container":"#93000a","secondary-fixed":"#ffddb8","on-tertiary":"#003734","outline-variant":"#5b403f","on-primary-container":"#5b000e","background":"#111317","on-secondary-fixed-variant":"#653e00","surface-container":"#1e2023","on-primary-fixed-variant":"#92001c","tertiary-fixed":"#8ef4eb","surface-container-highest":"#333538","inverse-on-surface":"#2f3034","surface-container-low":"#1a1c1f","secondary-container":"#ee9800","on-surface-variant":"#e4bebc"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"gutter-desktop":"1.5rem","space-sm":"0.5rem","space-lg":"1.25rem","space-xl":"2rem",gutter:"1rem","space-md":"0.75rem",margin:"1rem","space-xs":"0.25rem","margin-desktop":"2rem"},fontFamily:{"label-lg":["Plus Jakarta Sans"],"body-md":["Manrope"],"display-lg-mobile":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-sm":["Manrope"],"label-md":["Plus Jakarta Sans"],"display-lg":["Plus Jakarta Sans"],"body-lg":["Manrope"],"headline-lg-mobile":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"]},fontSize:{"label-lg":["14px",{lineHeight:"18px",fontWeight:"600"}],"body-md":["14px",{lineHeight:"20px",fontWeight:"400"}],"display-lg-mobile":["30px",{lineHeight:"38px",fontWeight:"700"}],"headline-lg":["28px",{lineHeight:"36px",fontWeight:"700"}],"body-sm":["12px",{lineHeight:"18px",fontWeight:"400"}],"label-md":["12px",{lineHeight:"16px",fontWeight:"600"}],"display-lg":["40px",{lineHeight:"48px",fontWeight:"700"}],"body-lg":["16px",{lineHeight:"24px",fontWeight:"400"}],"headline-lg-mobile":["22px",{lineHeight:"28px",fontWeight:"700"}],"label-sm":["11px",{lineHeight:"14px",fontWeight:"700"}],"headline-sm":["16px",{lineHeight:"22px",fontWeight:"600"}],"headline-md":["20px",{lineHeight:"26px",fontWeight:"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-low/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 max-w-7xl mx-auto px-margin-desktop flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md"><img alt="BiteWise Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBERkluVGodJnH-Qos2F9YRyjlv2PgXDEP07nOoO6s7ZFZG_T6oUGJilBPpfhZrtZFORaxWjuXpQRfHLhem6_bE2KfJyuOopTvIUJ-gVTvUjRcE_9Wat-QwRxeE5z82oPfvZ_x1VFp3ULlSVkyGqjDc7IJlBWRq_MRQvk3l-YMNrXgTAC_0kNy8F_ZjZ2h9enQzGS-tYVEAX05P8If-YuaHvv03hbQ59WM_Et9S1tKm"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-none tracking-tight">BiteWise</span><span class="font-body-sm text-body-sm text-on-surface-variant leading-none mt-1">Bangalore AI Recommender</span></div><div class="hidden xl:flex items-center gap-space-xs ml-space-md py-1 px-3 rounded-full bg-surface-container-high"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><span class="font-label-sm text-label-sm text-on-surface-variant">Bangalore · 12,480 Curated Spots · AI Ranked</span></div></div><nav class="hidden md:flex items-center gap-space-sm p-1 rounded-xl bg-surface-container" data-active-classes="bg-surface-container-highest text-primary font-label-md rounded-lg"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded-lg transition-colors" data-path="search-recommend" href="#">Search &amp; Recommend</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded-lg transition-colors" data-path="bangalore-food-map" href="#">Bangalore Food Map</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded-lg transition-colors" data-path="ai-taste-profile" href="#">AI Taste Profile</a></nav><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs py-1 px-space-sm rounded-lg bg-surface-container text-tertiary font-label-sm text-label-sm"><span class="material-symbols-outlined text-[14px]">database</span><span>API: Live (Zomato-indexed dataset)</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 min-h-[calc(100vh-4rem)] bg-surface"><div class="flex flex-col w-full">
+<!-- 1. Visual Token Inspector Ribbon (Compact Spec Strip) -->
+<section class="w-full bg-surface-container-lowest px-margin-desktop py-space-sm">
+<div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[15px] text-tertiary">tune</span>
+<span class="font-bold tracking-wider uppercase text-on-surface">Design Tokens</span>
+<span class="text-outline-variant">/</span>
+<span class="text-tertiary">Bangalore Engine v2.4</span>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-[#0B0D10] ring-1 ring-outline/30"></span>
+<span class="text-on-surface">Primary BG</span>
+<code class="text-[10px] text-secondary">#0B0D10</code>
+</div>
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-[#14181F]"></span>
+<span class="text-on-surface">Surface</span>
+<code class="text-[10px] text-secondary">#14181F</code>
+</div>
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-[#1A1F29]"></span>
+<span class="text-on-surface">Elevated</span>
+<code class="text-[10px] text-secondary">#1A1F29</code>
+</div>
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-[#2A3140]"></span>
+<span class="text-on-surface">Border</span>
+<code class="text-[10px] text-secondary">#2A3140</code>
+</div>
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="text-on-surface">Accent Red</span>
+<code class="text-[10px] text-primary">#E23744</code>
+</div>
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="text-on-surface">Amber Star</span>
+<code class="text-[10px] text-secondary-fixed-dim">#F59E0B</code>
+</div>
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-[#F2F4F8]"></span>
+<span class="text-on-surface">Text Primary</span>
+<code class="text-[10px] text-outline">#F2F4F8</code>
+</div>
+<!-- Token Item -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container">
+<span class="w-2.5 h-2.5 rounded-full bg-[#9AA3B2]"></span>
+<span class="text-on-surface">Text Muted</span>
+<code class="text-[10px] text-outline">#9AA3B2</code>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Hero Presentation Area -->
+<section class="relative w-full overflow-hidden bg-surface py-space-xl">
+<!-- Atmospheric subtle charcoal radial glow (No purple neon) -->
+<div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[340px] bg-gradient-to-b from-surface-container-high/40 via-surface-container/10 to-transparent blur-3xl pointer-events-none"></div>
+<div class="relative max-w-7xl mx-auto px-margin-desktop">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-lg mb-space-xl">
+<div class="max-w-3xl">
+<!-- Hero Signal Pill -->
+<div class="inline-flex items-center gap-space-xs px-3 py-1 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm mb-space-md shadow-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="tracking-wide">COMPONENT: PreferenceForm (Interactive Engine)</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight leading-tight">
+            Curated Bangalore Dining, <br class="hidden sm:inline"/>
+<span class="text-primary-container">Decoded by AI.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-space-md max-w-2xl">
+            Tailored to your exact neighborhood, taste cravings, budget tier, and real diner sentiment across 12,000+ Bangalore venues.
+          </p>
+</div>
+<!-- Bangalore Micro-stats Capsule -->
+<div class="flex md:flex-col items-center md:items-end gap-space-sm bg-surface-container-low p-space-md rounded-xl">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">12,480</span>
+<span class="font-label-sm text-label-sm text-tertiary px-1.5 py-0.5 rounded bg-surface-container">Live</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant text-right">
+            Bangalore Venues · 4.8M Sentiment Reviews
+          </div>
+</div>
+</div>
+<!-- 3. PreferenceForm Component Card & Dynamic Preview Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-desktop items-start">
+<!-- Left Side: Interactive PreferenceForm (7 Cols) -->
+<div class="lg:col-span-8 bg-surface-container-low rounded-xl p-space-lg shadow-xl relative overflow-hidden">
+<!-- Accent Top Bar -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-container via-secondary-container to-tertiary"></div>
+<form class="flex flex-col gap-space-lg" id="tastePreferenceForm" onsubmit="event.preventDefault(); triggerAiMatching();">
+<!-- Section 1: Locality & Budget -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Location Input -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5" for="localitySelect">
+<span class="material-symbols-outlined text-[16px] text-primary-container">location_on</span>
+                    Bangalore Localities
+                  </label>
+<span class="font-label-sm text-label-sm text-tertiary">Geo-Weighted</span>
+</div>
+<div class="relative">
+<select class="w-full h-11 px-3.5 pr-10 rounded-lg bg-surface-container text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary-container appearance-none transition-colors" id="localitySelect">
+<option selected="" value="ind-kor">Indiranagar &amp; Koramangala (High Density)</option>
+<option value="kor">Koramangala (Blocks 1-7)</option>
+<option value="ind">Indiranagar (100ft &amp; 12th Main)</option>
+<option value="cbd">Church Street / MG Road / Lavelle</option>
+<option value="hsr">HSR Layout (Sectors 1-7)</option>
+<option value="jpn">JP Nagar &amp; Jayanagar</option>
+<option value="wf">Whitefield &amp; ITPL Belt</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[20px]">expand_more</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Cluster radius: ±3.2 km around 100ft Rd &amp; 80ft Rd</p>
+</div>
+<!-- Budget Segmented Control -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">payments</span>
+                    Budget for Two
+                  </label>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="selectedBudgetText">Mid Tier</span>
+</div>
+<div class="grid grid-cols-3 p-1 rounded-lg bg-surface-container gap-1 h-11 items-center">
+<button class="budget-btn h-full rounded-md font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all flex flex-col justify-center items-center" onclick="setBudget('low', this)" type="button">
+<span>Low</span>
+<span class="text-[10px] opacity-70">₹300–600</span>
+</button>
+<button class="budget-btn active h-full rounded-md font-label-sm text-label-sm bg-surface-container-highest text-primary font-bold transition-all shadow-sm flex flex-col justify-center items-center" onclick="setBudget('med', this)" type="button">
+<span>Medium</span>
+<span class="text-[10px] opacity-90">₹700–1.5k</span>
+</button>
+<button class="budget-btn h-full rounded-md font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-all flex flex-col justify-center items-center" onclick="setBudget('high', this)" type="button">
+<span>High</span>
+<span class="text-[10px] opacity-70">₹1.8k+</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Inclusive of craft beer &amp; taxes</p>
+</div>
+</div>
+<!-- Section 2: Cuisine Multi-Select Chips -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">restaurant_menu</span>
+                  Flavor Profiles &amp; Food Cravings (Multi-select)
+                </label>
+<button class="font-label-sm text-label-sm text-primary hover:underline" onclick="toggleAllCuisines()" type="button">Select Best Bangalore Triad</button>
+</div>
+<div class="flex flex-wrap gap-2 pt-1" id="cuisineChipGroup">
+<!-- Selected Chips -->
+<button class="chip-item selected inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-label-md text-label-md bg-primary-container/20 text-on-surface transition-colors" onclick="toggleChip(this)" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Craft Beer &amp; Pubs</span>
+</button>
+<button class="chip-item selected inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-label-md text-label-md bg-primary-container/20 text-on-surface transition-colors" onclick="toggleChip(this)" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Modern Indian</span>
+</button>
+<button class="chip-item selected inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-label-md text-label-md bg-primary-container/20 text-on-surface transition-colors" onclick="toggleChip(this)" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">check</span>
+<span>Mangalorean / Coastal Seafood</span>
+</button>
+<!-- Unselected Chips -->
+<button class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" onclick="toggleChip(this)" type="button">
+<span class="material-symbols-outlined text-[16px] hidden">check</span>
+<span>South Indian Tiffin &amp; Filter Kaapi</span>
+</button>
+<button class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" onclick="toggleChip(this)" type="button">
+<span class="material-symbols-outlined text-[16px] hidden">check</span>
+<span>Asian Dim Sum &amp; Bao</span>
+</button>
+<button class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" onclick="toggleChip(this)" type="button">
+<span class="material-symbols-outlined text-[16px] hidden">check</span>
+<span>Woodfired Neapolitan Pizza</span>
+</button>
+<button class="chip-item inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" onclick="toggleChip(this)" type="button">
+<span class="material-symbols-outlined text-[16px] hidden">check</span>
+<span>Artisanal Bakery &amp; Desserts</span>
+</button>
+</div>
+</div>
+<!-- Section 3: Min Rating Slider & Top K Control -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-lg items-center bg-surface-container p-space-md rounded-xl">
+<!-- Rating Slider (8 cols) -->
+<div class="md:col-span-8 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    Minimum Rating Floor
+                  </span>
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high">
+<span class="font-label-md text-label-md text-secondary font-bold" id="ratingOutput">4.2★</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">(Min 500+ verified votes)</span>
+</div>
+</div>
+<input class="w-full accent-primary-container bg-surface-container-highest h-2 rounded-lg cursor-pointer" id="ratingSlider" max="4.8" min="3.5" oninput="updateRatingDisplay(this.value)" step="0.1" type="range" value="4.2"/>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>3.5 (Decent)</span>
+<span>4.0 (Very Good)</span>
+<span>4.5 (Elite Bengaluru)</span>
+</div>
+</div>
+<!-- Top-K Stepper Control (4 cols) -->
+<div class="md:col-span-4 flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface">Top K Results</span>
+<div class="flex items-center justify-between bg-surface-container-highest rounded-lg p-1">
+<button class="w-8 h-8 rounded bg-surface-container text-on-surface hover:text-primary flex items-center justify-center transition-colors" onclick="adjustTopK(-1)" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<div class="flex flex-col items-center">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-none" id="topKDisplay">5</span>
+<span class="text-[10px] text-on-surface-variant leading-none mt-0.5">Venues</span>
+</div>
+<button class="w-8 h-8 rounded bg-surface-container text-on-surface hover:text-primary flex items-center justify-center transition-colors" onclick="adjustTopK(1)" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<span class="text-[11px] text-on-surface-variant text-center">Top 5 recommendations</span>
+</div>
+</div>
+<!-- Section 4: Qualitative Natural Language Query -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface flex items-center gap-1.5" for="promptPreferences">
+<span class="material-symbols-outlined text-[16px] text-tertiary">psychology</span>
+                  Natural Language Nuance &amp; Vibes
+                </label>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Semantic Vector Weights: Active</span>
+</div>
+<div class="relative">
+<textarea class="w-full p-3 rounded-lg bg-surface-container text-on-surface font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-primary-container resize-none transition-colors" id="promptPreferences" placeholder="e.g. Microbrewery with garden seating, pet friendly, great Belgian wit, low acoustic echo for conversation..." rows="3">Looking for vibrant alfresco seating or microbrewery vibe with stellar small plates, good craft IPAs, and low noise if possible.</textarea>
+<div class="absolute bottom-2.5 right-2.5 flex items-center gap-1 font-label-sm text-label-sm text-tertiary bg-surface-container-high px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+<span>96% Intent Parsed</span>
+</div>
+</div>
+</div>
+<!-- Section 5: Primary Action Area -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-2">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">bolt</span>
+<span>Powered by vector search over Bangalore Zomato dining reviews &amp; live ambience indices.</span>
+</div>
+<button class="w-full sm:w-auto px-6 h-12 bg-primary-container hover:bg-inverse-primary text-on-primary font-label-lg text-label-lg rounded-xl shadow-lg transition-transform active:scale-[0.98] flex items-center justify-center gap-2 whitespace-nowrap" id="submitRecommendationBtn" type="submit">
+<span>Get AI Recommendations</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Right Side: Dynamic AI Response Preview & Bangalore Signal Card (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Live Preview Recommendation Card -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-lg flex flex-col gap-space-sm relative">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                Top Recommendation Preview
+              </span>
+<div class="px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary font-label-sm text-label-sm font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                4.6
+              </div>
+</div>
+<div class="relative h-44 rounded-lg overflow-hidden mt-1">
+<img class="w-full h-full object-cover" data-alt="Vibrant Bangalore alfresco microbrewery courtyard at twilight with overhead fairy string lights, lush tropical foliage, brick arches, wooden benches, and groups of diners drinking freshly tapped craft beer in Indiranagar Bangalore." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6n9_M64kq6r0JHARoogVs_DISHBXlYIip6Mx-YKN_3J3LzAMjerB5IgtsC-yIuwfqjlI0ilzpCXmyNr1y1yLx0kWKU_AQDIbGYTdRPTcATMgSuzYa6sxXK-YlHgLRAj14e6KVpTo5-wp9Qs7xP0Nj99natNtbCuESHHC4j_FTrHvWCgNqopNzO7RI_t3CtEcrF_yZ0d2AUC8-YC_IC_rsphtZJ5ao10v65CYE9uw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/30 to-transparent"></div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-end justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Toit Brewpub</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">100 Feet Rd, Indiranagar · 1.4 km away</p>
+</div>
+<span class="font-label-md text-label-md text-secondary">₹1,500 for 2</span>
+</div>
+</div>
+<!-- AI Insight Callout Well -->
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-1">
+<div class="flex items-center gap-1 text-primary text-[11px] font-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">psychology</span>
+<span>AI MATCH RATIONALE (98.4% FIT)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                “Matches your request for stellar IPAs ('Tintin Toit' &amp; 'Colonial Toit') with airy alfresco corners. Acoustic analysis shows garden courtyard noise drops substantially before 8:30 PM.”
+              </p>
+</div>
+<!-- Feature Tags -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Craft IPA Taps</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Woodfired Pizza</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">Outdoor Courtyard</span>
+</div>
+<div class="pt-2 flex items-center gap-2">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-highest hover:bg-surface-bright text-on-surface font-label-sm text-label-sm transition-colors text-center">
+                View Full Breakdown
+              </button>
+<button class="px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-bright text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+</button>
+</div>
+</div>
+<!-- Secondary Location Context Capsule -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-[16px] text-tertiary">analytics</span>
+                Live Bangalore Sentiment Radar
+              </span>
+<span class="text-tertiary">Zomato Sync: 4m ago</span>
+</div>
+<div class="space-y-2 pt-1 font-body-sm text-body-sm">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Indiranagar IPA Availability</span>
+<span class="text-on-surface font-mono font-semibold">92% High</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 92%"></div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-1">
+<span>Koramangala Table Waiting Time</span>
+<span class="text-secondary font-mono font-semibold">~18 mins avg</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 48%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Component Specification Callout & Technical Streamlit/React Implementation Footer Strip -->
+<section class="w-full bg-surface-container-lowest py-space-lg px-margin-desktop">
+<div class="max-w-7xl mx-auto flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary">developer_mode</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Architectural Component Manifest</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ Streamlit &amp; React Design Contract</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container text-tertiary font-label-sm text-label-sm">
+            Status: Ready for Code-Gen
+          </span>
+</div>
+</div>
+<!-- Modular Cards annotating specific sub-components -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-space-sm">
+<!-- Component Spec Item -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-mono">[PreferenceForm]</span>
+<span class="text-[10px] text-on-surface-variant">Core Form</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Surface container card with radial wash, manages combined state dispatch.</p>
+</div>
+<!-- Component Spec Item -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-mono">[SegmentedControl]</span>
+<span class="text-[10px] text-on-surface-variant">Selection</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">3-way mutually exclusive button segment for Low/Med/High budget brackets.</p>
+</div>
+<!-- Component Spec Item -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-tertiary font-mono">[MultiSelectChipGroup]</span>
+<span class="text-[10px] text-on-surface-variant">Toggles</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pill-shaped toggle array with conditional checkmark iconography for cuisine filters.</p>
+</div>
+<!-- Component Spec Item -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface font-mono">[RatingSlider]</span>
+<span class="text-[10px] text-on-surface-variant">Range</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Numeric rating floor slider (3.5 - 4.8★) with live vote threshold indicator.</p>
+</div>
+<!-- Component Spec Item -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-mono">[PrimaryCTA]</span>
+<span class="text-[10px] text-on-surface-variant">Action</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Warm crimson #E23744 button with hover elevation &amp; loading pulse state.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive State Management Script (Client-Side) -->
+<script>
+    // Rating Slider Display Update
+    function updateRatingDisplay(val) {
+      const output = document.getElementById('ratingOutput');
+      if (output) {
+        output.innerText = parseFloat(val).toFixed(1) + '★';
+      }
+    }
+
+    // Budget Segmented Control Interaction
+    function setBudget(tier, btnElement) {
+      const allButtons = document.querySelectorAll('.budget-btn');
+      allButtons.forEach(btn => {
+        btn.classList.remove('active', 'bg-surface-container-highest', 'text-primary', 'font-bold', 'shadow-sm');
+        btn.classList.add('text-on-surface-variant');
+      });
+
+      btnElement.classList.remove('text-on-surface-variant');
+      btnElement.classList.add('active', 'bg-surface-container-highest', 'text-primary', 'font-bold', 'shadow-sm');
+
+      const textLabel = document.getElementById('selectedBudgetText');
+      if (textLabel) {
+        if (tier === 'low') textLabel.innerText = 'Budget Tier (₹300-600)';
+        if (tier === 'med') textLabel.innerText = 'Mid Tier (₹700-1500)';
+        if (tier === 'high') textLabel.innerText = 'Premium Tier (₹1800+)';
+      }
+    }
+
+    // Multi-Select Chip Toggle Interaction
+    function toggleChip(chipBtn) {
+      const icon = chipBtn.querySelector('.material-symbols-outlined');
+      const isSelected = chipBtn.classList.contains('selected');
+
+      if (isSelected) {
+        chipBtn.classList.remove('selected', 'bg-primary-container/20', 'text-on-surface');
+        chipBtn.classList.add('bg-surface-container', 'text-on-surface-variant');
+        if (icon) icon.classList.add('hidden');
+      } else {
+        chipBtn.classList.add('selected', 'bg-primary-container/20', 'text-on-surface');
+        chipBtn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        if (icon) icon.classList.remove('hidden');
+      }
+    }
+
+    // Quick Triad Selector Helper
+    function toggleAllCuisines() {
+      const chips = document.querySelectorAll('#cuisineChipGroup .chip-item');
+      chips.forEach((c, idx) => {
+        const icon = c.querySelector('.material-symbols-outlined');
+        if (idx < 3) {
+          c.classList.add('selected', 'bg-primary-container/20', 'text-on-surface');
+          c.classList.remove('bg-surface-container', 'text-on-surface-variant');
+          if (icon) icon.classList.remove('hidden');
+        } else {
+          c.classList.remove('selected', 'bg-primary-container/20', 'text-on-surface');
+          c.classList.add('bg-surface-container', 'text-on-surface-variant');
+          if (icon) icon.classList.add('hidden');
+        }
+      });
+    }
+
+    // Top K Stepper
+    let currentTopK = 5;
+    function adjustTopK(delta) {
+      currentTopK = Math.max(1, Math.min(15, currentTopK + delta));
+      const display = document.getElementById('topKDisplay');
+      if (display) {
+        display.innerText = currentTopK;
+      }
+    }
+
+    // Simulation for Primary CTA
+    function triggerAiMatching() {
+      const btn = document.getElementById('submitRecommendationBtn');
+      if (!btn) return;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span><span>Indexing 12,480 spots...</span>';
+      btn.classList.add('opacity-80', 'pointer-events-none');
+
+      setTimeout(() => {
+        btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span><span>Found 5 Top Matches!</span>';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('opacity-80', 'pointer-events-none');
+        }, 1800);
+      }, 900);
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest py-space-lg"><div class="max-w-7xl mx-auto px-margin-desktop flex flex-col sm:flex-row items-center justify-between gap-space-md text-on-surface-variant font-body-sm text-body-sm"><div><span>© 2025 BiteWise AI · Urban Culinary Intelligence Engine</span></div><div class="flex items-center gap-space-lg"><span class="text-secondary">Real-time Taste Vector v2.4</span><span class="text-on-surface-variant">Indiranagar · Koramangala · Whitefield · CBD</span></div></div></footer></body></html>
