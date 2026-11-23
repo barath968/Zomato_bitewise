@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { fetchOptions, getApiBaseUrl, postRecommend } from "@/lib/api";
 import type {
@@ -27,6 +27,7 @@ export function HomeClient() {
   const [error, setError] = useState<string | null>(null);
   const [prefs, setPrefs] = useState<RecommendRequest | null>(null);
   const [result, setResult] = useState<RecommendationResponse | null>(null);
+  const formRef = useRef<HTMLDivElement | null>(null);
 
   const loadOptions = useCallback(async () => {
     setBoot("boot");
@@ -64,46 +65,63 @@ export function HomeClient() {
     }
   };
 
+  const clearResults = () => {
+    setResult(null);
+    setError(null);
+    setPrefs(null);
+  };
+
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <AppShell restaurantCount={options?.restaurant_count}>
       <section className="relative mb-8 overflow-hidden pb-2">
-        <div className="pointer-events-none absolute -top-20 left-1/2 h-56 w-[720px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgba(40,42,45,0.55),transparent_70%)]" />
-        <h1 className="relative font-display text-3xl font-bold tracking-tight text-bw-text md:text-4xl">
-          Curated Bangalore Dining,
-          <br />
-          <span className="text-[#ff535a]">Decoded by AI.</span>
-        </h1>
-        <p className="relative mt-3 max-w-2xl text-base leading-relaxed text-bw-muted">
-          Filter real Zomato venues by neighborhood, budget, cuisine, and rating —
-          then let the model rank matches and explain why they fit.
-        </p>
+        <div className="pointer-events-none absolute -top-32 left-1/2 h-[340px] w-[850px] -translate-x-1/2 bg-gradient-to-b from-bw-high/40 via-[#1e2023]/10 to-transparent blur-3xl" />
+
+        <div className="relative mb-8 max-w-3xl">
+          <h1 className="font-display text-[30px] font-bold leading-[38px] tracking-tight text-bw-text md:text-[40px] md:leading-[48px]">
+            Curated Bangalore Dining,
+            <br className="hidden sm:inline" />{" "}
+            <span className="text-bw-accent-bright">Decoded by AI.</span>
+          </h1>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-bw-variant">
+            Tailored to your neighborhood, taste cravings, budget tier, and real
+            diner sentiment across Bangalore venues.
+          </p>
+        </div>
       </section>
 
       {boot === "boot" ? <LoadingState /> : null}
 
       {boot === "boot_error" ? (
         <ErrorBanner
-          title="API unavailable"
-          message="Could not load restaurant options from the backend."
+          title="Unable to load restaurant options"
+          message="Could not reach the BiteWise API to load localities and cuisines."
           detail={`${bootError} · API: ${getApiBaseUrl()}`}
           onRetry={() => void loadOptions()}
         />
       ) : null}
 
       {boot === "ready" && options ? (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
+          <div className="lg:col-span-5" ref={formRef}>
             <PreferenceForm options={options} busy={busy} onSubmit={runRecommend} />
           </div>
-          <div className="lg:col-span-7 space-y-4">
+
+          <div className="space-y-4 lg:col-span-7">
             {busy ? <LoadingState /> : null}
 
             {!busy && error ? (
               <ErrorBanner
-                title="Recommendation engine interrupted"
-                message="Something went wrong while generating recommendations."
+                title="Unable to complete AI recommendation ranking"
+                message="Something went wrong while generating recommendations. Your preferences are preserved — retry or use dry-run mode."
                 detail={error}
                 onRetry={() => prefs && void runRecommend(prefs)}
+                onDryRunRetry={() =>
+                  prefs && void runRecommend({ ...prefs, dry_run: true })
+                }
               />
             ) : null}
 
@@ -114,6 +132,8 @@ export function HomeClient() {
                     prefs={prefs}
                     result={result}
                     budgetLabels={options.budget_labels}
+                    onEdit={scrollToForm}
+                    onReset={clearResults}
                   />
                   <EmptyState
                     reason={
@@ -121,6 +141,10 @@ export function HomeClient() {
                       "No restaurants matched your filters."
                     }
                     suggestions={result.meta.suggestions}
+                    onReset={() => {
+                      clearResults();
+                      scrollToForm();
+                    }}
                   />
                 </>
               ) : (
@@ -129,20 +153,29 @@ export function HomeClient() {
                     prefs={prefs}
                     result={result}
                     budgetLabels={options.budget_labels}
+                    onEdit={scrollToForm}
+                    onReset={clearResults}
                   />
                   {result.summary ? (
-                    <div className="rounded-2xl border border-bw-border bg-bw-surface p-4">
-                      <div className="font-display text-sm font-semibold text-bw-text">
+                    <div className="rounded-xl border border-bw-border bg-bw-surface p-4">
+                      <div className="flex items-center gap-1.5 font-display text-xs font-semibold text-bw-accent-soft">
+                        <span className="material-symbols-outlined text-[16px]">
+                          auto_awesome
+                        </span>
                         AI summary
                       </div>
                       <p className="mt-1 text-sm text-bw-text">{result.summary}</p>
                     </div>
                   ) : null}
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h2 className="font-display text-xl font-bold text-bw-text">
-                      Curated recommendations
-                    </h2>
-                    <span className="text-sm text-bw-muted">Ranked by preference fit</span>
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <h2 className="font-display text-xl font-bold text-bw-text md:text-[22px]">
+                        Curated recommendations
+                      </h2>
+                      <span className="text-xs font-semibold text-bw-muted">
+                        Ranked by preference fit
+                      </span>
+                    </div>
                   </div>
                   <div className="space-y-4">
                     {result.items.map((item) => (
@@ -158,9 +191,13 @@ export function HomeClient() {
             ) : null}
 
             {!busy && !error && !result ? (
-              <p className="text-sm text-bw-muted">
-                Submit preferences to see ranked recommendations with AI explanations.
-              </p>
+              <div className="flex items-start gap-2 rounded-xl border border-dashed border-bw-border bg-bw-surface/50 p-6 text-sm text-bw-muted">
+                <span className="material-symbols-outlined text-[18px] text-bw-amber">
+                  bolt
+                </span>
+                Powered by filters over Bangalore Zomato venues, then AI ranking
+                with explanations.
+              </div>
             ) : null}
           </div>
         </div>

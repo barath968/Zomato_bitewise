@@ -3,27 +3,89 @@ type Props = {
   message: string;
   detail?: string | null;
   onRetry?: () => void;
+  onDryRunRetry?: () => void;
 };
 
-export function ErrorBanner({ title, message, detail, onRetry }: Props) {
+export function ErrorBanner({
+  title,
+  message,
+  detail,
+  onRetry,
+  onDryRunRetry,
+}: Props) {
   return (
-    <div className="rounded-2xl border border-[#ffb4ab]/35 bg-gradient-to-b from-[rgba(147,0,10,0.35)] to-bw-surface px-6 py-8 text-center">
-      <h2 className="font-display text-xl font-bold text-bw-text">{title}</h2>
-      <div className="mx-auto mt-4 max-w-xl rounded-lg border border-[#ffb4ab]/30 bg-[rgba(147,0,10,0.25)] p-4 text-left">
-        <strong className="block font-display text-[#ffb4ab]">{message}</strong>
-        <span className="mt-1 block text-sm text-bw-muted">
-          {detail || "Try again, or enable dry-run fallback."}
-        </span>
+    <div className="relative overflow-hidden rounded-xl border border-bw-border bg-bw-surface p-5 shadow-card md:p-8">
+      <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-bw-accent-bright/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-60 w-60 rounded-full bg-bw-amber-bright/10 blur-2xl" />
+
+      <div className="relative z-10 flex flex-col items-start gap-5 md:flex-row">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#1e2023] text-bw-accent-bright shadow-inner">
+          <svg
+            className="h-8 w-8"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.8"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="M12 8v4" />
+            <path d="M12 16h.01" />
+          </svg>
+        </div>
+
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center rounded bg-bw-error-bg px-2 py-0.5 font-display text-[11px] font-bold text-[#ffdad6]">
+              Service interruption
+            </span>
+            <span className="font-display text-[11px] font-semibold text-bw-muted">
+              Recommendation engine
+            </span>
+          </div>
+
+          <h2 className="font-display text-xl font-bold tracking-tight text-bw-text md:text-[22px]">
+            {title}
+          </h2>
+          <p className="max-w-3xl text-base leading-relaxed text-bw-muted">{message}</p>
+
+          <div className="mt-1 flex flex-col items-start justify-between gap-3 rounded-lg bg-[#1e2023] p-4 sm:flex-row sm:items-center">
+            <div className="flex items-start gap-3 text-bw-teal">
+              <span className="material-symbols-outlined text-[20px]">bolt</span>
+              <span className="text-sm text-bw-text">
+                <strong>Detail:</strong>{" "}
+                {detail || "Try again, or use dry-run fallback (rating-sorted)."}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            {onRetry ? (
+              <button
+                type="button"
+                onClick={onRetry}
+                className="flex items-center gap-2 rounded-lg bg-bw-accent-bright px-5 py-2.5 font-display text-sm font-semibold text-[#410007] shadow-md transition hover:brightness-110 active:scale-95"
+              >
+                <span className="material-symbols-outlined text-[18px]">sync</span>
+                Retry recommendation
+              </button>
+            ) : null}
+            {onDryRunRetry ? (
+              <button
+                type="button"
+                onClick={onDryRunRetry}
+                className="flex items-center gap-2 rounded-lg bg-bw-highest px-5 py-2.5 font-display text-sm font-semibold text-bw-text transition hover:bg-[#37393d]"
+              >
+                <span className="material-symbols-outlined text-[18px] text-bw-amber">
+                  dataset
+                </span>
+                Fast heuristic mode (dry run)
+              </button>
+            ) : null}
+          </div>
+        </div>
       </div>
-      {onRetry ? (
-        <button
-          type="button"
-          onClick={onRetry}
-          className="mt-5 h-10 rounded-lg bg-bw-accent px-5 font-display text-sm font-semibold text-white hover:bg-bw-accent-hover"
-        >
-          Retry
-        </button>
-      ) : null}
     </div>
   );
 }
