@@ -22,6 +22,11 @@ jobs:
       name: production
       url: https://zomatobitewise-production.up.railway.app
     steps:
+      - name: Checkout (for change detection)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Create GitHub deployment
         id: deployment
         uses: actions/github-script@v7
@@ -48,8 +53,26 @@ jobs:
         run: |
           set -euo pipefail
           EXPECTED_SHA="${GITHUB_SHA}"
+          BEFORE="${{ github.event.before }}"
           echo "Expecting commit: ${EXPECTED_SHA}"
           echo "Probing: ${API_BASE_URL}/health"
+
+          # Frontend/docs-only pushes do not redeploy Railway — do not require SHA match.
+          REQUIRE_SHA=1
+          if [ -n "${BEFORE}" ] && [ "${BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+            BACKEND_CHANGED=$(git diff --name-only "${BEFORE}" "${EXPECTED_SHA}" \
+              | grep -E '^(src/|data/|requirements\.txt|Dockerfile|Procfile|railway\.toml|scripts/)' || true)
+            if [ -z "${BACKEND_CHANGED}" ]; then
+              REQUIRE_SHA=0
+              echo "No backend-related files changed; accepting healthy /health without SHA match."
+            else
+              echo "Backend-related changes detected:"
+              echo "${BACKEND_CHANGED}"
+              echo "Will wait for Railway git_commit to match ${EXPECTED_SHA}."
+            fi
+          else
+            echo "No previous SHA available; requiring healthy API (SHA match if present)."
+          fi
 
           OK=0
           for i in $(seq 1 36); do
@@ -63,10 +86,12 @@ jobs:
               COMMIT=$(python3 -c "import json; print(json.load(open('/tmp/health.json')).get('git_commit') or '')")
               COUNT=$(python3 -c "import json; print(json.load(open('/tmp/health.json')).get('restaurant_count') or 0)")
               if [ "${STATUS}" = "ok" ] && [ "${COUNT}" -gt 0 ]; then
-                # Prefer SHA match when Railway exposes it; otherwise accept healthy API.
-                if [ -n "${COMMIT}" ] && [ "${COMMIT}" != "${EXPECTED_SHA}" ]; then
+                if [ "${REQUIRE_SHA}" = "1" ] && [ -n "${COMMIT}" ] && [ "${COMMIT}" != "${EXPECTED_SHA}" ]; then
                   echo "Healthy but commit mismatch (live=${COMMIT}). Waiting for new deploy..."
                 else
+                  if [ -n "${COMMIT}" ] && [ "${COMMIT}" != "${EXPECTED_SHA}" ]; then
+                    echo "Healthy API on older commit ${COMMIT} (frontend/docs-only push — OK)."
+                  fi
                   echo "health_ok=true" >> "$GITHUB_OUTPUT"
                   echo "live_commit=${COMMIT:-unknown}" >> "$GITHUB_OUTPUT"
                   echo "restaurant_count=${COUNT}" >> "$GITHUB_OUTPUT"
