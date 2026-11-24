@@ -20,9 +20,10 @@ const BUDGET_META: Record<
   BudgetLevel,
   { label: string; hint: string; short: string }
 > = {
-  low: { label: "Low", hint: "₹300–600", short: "Low tier" },
-  medium: { label: "Medium", hint: "₹700–1.5k", short: "Mid tier" },
-  high: { label: "High", hint: "₹1.8k+", short: "High tier" },
+  // Hints must match preprocess budget_bucket cutoffs (<500 / 500–1000 / >1000).
+  low: { label: "Low", hint: "under ₹500", short: "Low tier" },
+  medium: { label: "Medium", hint: "₹500–1k", short: "Mid tier" },
+  high: { label: "High", hint: "₹1k+", short: "High tier" },
 };
 
 const DEFAULT_BUDGET_LABELS: Record<string, string> = {
@@ -337,8 +338,10 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
           </div>
           {isCuisineSearching ? (
             <p className="text-xs text-bw-muted">
-              {filteredCuisines.length} match
-              {filteredCuisines.length === 1 ? "" : "es"} · selected: {cuisine}
+              {filteredCuisines.length === 1
+                ? "1 match"
+                : `${filteredCuisines.length} matches`}{" "}
+              · selected: {cuisine}
             </p>
           ) : null}
         </div>

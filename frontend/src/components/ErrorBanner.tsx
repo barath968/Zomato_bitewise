@@ -6,6 +6,8 @@ type Props = {
   title: string;
   message: string;
   detail?: string | null;
+  contextLabel?: string;
+  retryLabel?: string;
   onRetry?: () => void;
   onDryRunRetry?: () => void;
 };
@@ -14,6 +16,8 @@ export function ErrorBanner({
   title,
   message,
   detail,
+  contextLabel = "Recommendation engine",
+  retryLabel = "Retry recommendation",
   onRetry,
   onDryRunRetry,
 }: Props) {
@@ -50,7 +54,7 @@ export function ErrorBanner({
               Service interruption
             </Badge>
             <span className="font-display text-[11px] font-semibold text-bw-muted">
-              Recommendation engine
+              {contextLabel}
             </span>
           </div>
 
@@ -77,7 +81,7 @@ export function ErrorBanner({
                 className="h-auto gap-2 rounded-lg bg-bw-accent-bright px-5 py-2.5 font-display text-sm font-semibold text-[#410007] shadow-md hover:bg-bw-accent-bright hover:brightness-110 active:scale-95"
               >
                 <span className="material-symbols-outlined text-[18px]">sync</span>
-                Retry recommendation
+                {retryLabel}
               </Button>
             ) : null}
             {onDryRunRetry ? (

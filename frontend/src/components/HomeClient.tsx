@@ -106,6 +106,8 @@ export function HomeClient() {
           title="Unable to load restaurant options"
           message="Could not reach the BiteWise API to load localities and cuisines."
           detail={`${bootError} · API: ${getApiBaseUrl()}`}
+          contextLabel="Options loader"
+          retryLabel="Retry loading options"
           onRetry={() => void loadOptions()}
         />
       ) : null}

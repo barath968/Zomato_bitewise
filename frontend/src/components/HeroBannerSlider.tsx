@@ -4,25 +4,25 @@ import { useEffect, useState } from "react";
 
 const BANNERS = [
   {
-    id: "south-indian",
-    title: "South Indian favourites",
-    subtitle: "Dosa, filter coffee & local classics",
+    id: "fine-dining",
+    title: "Fine dining rooms",
+    subtitle: "Candlelit tables & chef-driven tasting menus",
     image:
-      "https://images.unsplash.com/photo-1630383249896-424e482df921?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80",
   },
   {
-    id: "biryani",
-    title: "Spice & biryani trails",
-    subtitle: "Bold flavours across Bangalore kitchens",
+    id: "high-tier",
+    title: "High-tier restaurants",
+    subtitle: "Polished service & elevated Bangalore nights",
     image:
-      "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=80",
   },
   {
     id: "global",
-    title: "Global dining scenes",
-    subtitle: "Cafés, Asian plates & world cuisine",
+    title: "World cuisine plates",
+    subtitle: "Sushi, noodles, pizza & global flavours",
     image:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=1200&q=80",
   },
 ] as const;
 
