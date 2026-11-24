@@ -38,10 +38,7 @@ export function FilterSummary({
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-display text-sm font-semibold text-bw-text">
-                Active taste context
-              </span>
-              <span className="truncate text-sm text-bw-muted">
+              <span className="truncate font-display text-sm font-semibold text-bw-text">
                 {prefs.location} · {budget} · Min ★{prefs.min_rating.toFixed(1)}+ ·{" "}
                 {cuisine}
               </span>
@@ -53,7 +50,7 @@ export function FilterSummary({
               </span>
               <span className="text-bw-placeholder">/</span>
               <span className="text-bw-muted">
-                Candidates {meta.candidate_count}
+                Matched venues {meta.candidate_count}
               </span>
             </div>
             <div className="mt-2">

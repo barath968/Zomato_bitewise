@@ -385,7 +385,7 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
                 <span className="material-symbols-outlined text-[16px] text-bw-teal">
                   format_list_numbered
                 </span>
-                Top K results
+                Recommendations
               </Label>
               <Badge
                 variant="secondary"
@@ -405,7 +405,7 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
             />
             <div className="flex justify-between font-display text-[11px] font-semibold text-bw-muted">
               <span>{options.top_k_min}</span>
-              <span>venues</span>
+              <span>places</span>
               <span>{options.top_k_max}</span>
             </div>
           </div>
