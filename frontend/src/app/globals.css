@@ -5,8 +5,48 @@
 @tailwind utilities;
 
 :root {
+  --background: #ffffff;
+  --foreground: #0b0d10;
+  --card: #ffffff;
+  --card-foreground: #0b0d10;
+  --popover: #ffffff;
+  --popover-foreground: #0b0d10;
+  --primary: #e23744;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f4f8;
+  --secondary-foreground: #0b0d10;
+  --muted: #f2f4f8;
+  --muted-foreground: #525c6e;
+  --accent: #f2f4f8;
+  --accent-foreground: #0b0d10;
+  --destructive: #e23744;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #ff535a;
+  --radius: 0.625rem;
+}
+
+/* BiteWise dark tokens — keep brand red + surfaces */
+.dark {
   --background: #0b0d10;
   --foreground: #f2f4f8;
+  --card: #14181f;
+  --card-foreground: #f2f4f8;
+  --popover: #1a1f29;
+  --popover-foreground: #f2f4f8;
+  --primary: #e23744;
+  --primary-foreground: #ffffff;
+  --secondary: #282a2d;
+  --secondary-foreground: #f2f4f8;
+  --muted: #1a1f29;
+  --muted-foreground: #9aa3b2;
+  --accent: #282a2d;
+  --accent-foreground: #ffb3b1;
+  --destructive: #ffb4ab;
+  --border: #2a3140;
+  --input: #2a3140;
+  --ring: #ff535a;
+  --radius: 0.625rem;
 }
 
 body {
@@ -47,4 +87,27 @@ body {
   );
   background-size: 200% 100%;
   animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  .theme {
+    --animate-shine: shine var(--duration) infinite linear;
+  }
+}
+
+@theme inline {
+  @keyframes shine {
+  0% {
+    background-position: 0% 0%;
+    }
+  50% {
+    background-position: 100% 100%;
+    }
+  to {
+    background-position: 0% 0%;
+    }
+  }
 }

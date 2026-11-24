@@ -10,10 +10,12 @@ import type {
 } from "@/lib/types";
 
 import { AppShell } from "./AppShell";
+import { BootLoader } from "./BootLoader";
 import { EmptyState } from "./EmptyState";
 import { ErrorBanner } from "./ErrorBanner";
 import { FilterSummary } from "./FilterSummary";
-import { LoadingState } from "./LoadingState";
+import { AiSearchLoader } from "./AiSearchLoader";
+import { HeroBannerSlider } from "./HeroBannerSlider";
 import { PreferenceForm } from "./PreferenceForm";
 import { RestaurantCard } from "./RestaurantCard";
 
@@ -76,24 +78,28 @@ export function HomeClient() {
   };
 
   return (
-    <AppShell restaurantCount={options?.restaurant_count}>
+    <AppShell>
       <section className="relative mb-8 overflow-hidden pb-2">
         <div className="pointer-events-none absolute -top-32 left-1/2 h-[340px] w-[850px] -translate-x-1/2 bg-gradient-to-b from-bw-high/40 via-[#1e2023]/10 to-transparent blur-3xl" />
 
-        <div className="relative mb-8 max-w-3xl">
-          <h1 className="font-display text-[30px] font-bold leading-[38px] tracking-tight text-bw-text md:text-[40px] md:leading-[48px]">
-            Curated Bangalore Dining,
-            <br className="hidden sm:inline" />{" "}
-            <span className="text-bw-accent-bright">Decoded by AI.</span>
-          </h1>
-          <p className="mt-3 max-w-2xl text-base leading-relaxed text-bw-variant">
-            Tailored to your neighborhood, taste cravings, budget tier, and real
-            diner sentiment across Bangalore venues.
-          </p>
+        <div className="relative mb-8 grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-6">
+            <h1 className="font-display text-[30px] font-bold leading-[38px] tracking-tight text-bw-text md:text-[40px] md:leading-[48px]">
+              Discover Bangalore’s{" "}
+              <span className="text-bw-accent-bright">Diverse Cuisines</span>
+            </h1>
+            <p className="mt-3 max-w-2xl text-base leading-relaxed text-bw-variant">
+              Explore Bangalore’s culinary variety, from local favourites to global
+              flavours, and find your next favourite dining experience.
+            </p>
+          </div>
+          <div className="lg:col-span-6">
+            <HeroBannerSlider />
+          </div>
         </div>
       </section>
 
-      {boot === "boot" ? <LoadingState /> : null}
+      {boot === "boot" ? <BootLoader /> : null}
 
       {boot === "boot_error" ? (
         <ErrorBanner
@@ -106,12 +112,13 @@ export function HomeClient() {
 
       {boot === "ready" && options ? (
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-5" ref={formRef}>
+          {/* Fixed width so Preference Engine stays the same size after recommendations */}
+          <div className="w-full lg:col-span-6 lg:sticky lg:top-24" ref={formRef}>
             <PreferenceForm options={options} busy={busy} onSubmit={runRecommend} />
           </div>
 
-          <div className="space-y-4 lg:col-span-7">
-            {busy ? <LoadingState /> : null}
+          <div className="w-full space-y-4 lg:col-span-6">
+            {busy ? <AiSearchLoader /> : null}
 
             {!busy && error ? (
               <ErrorBanner
@@ -188,16 +195,6 @@ export function HomeClient() {
                   </div>
                 </>
               )
-            ) : null}
-
-            {!busy && !error && !result ? (
-              <div className="flex items-start gap-2 rounded-xl border border-dashed border-bw-border bg-bw-surface/50 p-6 text-sm text-bw-muted">
-                <span className="material-symbols-outlined text-[18px] text-bw-amber">
-                  bolt
-                </span>
-                Powered by filters over Bangalore Zomato venues, then AI ranking
-                with explanations.
-              </div>
             ) : null}
           </div>
         </div>

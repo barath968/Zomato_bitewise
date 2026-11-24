@@ -1,7 +1,16 @@
+import { Badge } from "@/components/ui/badge";
+import { ShineBorder } from "@/components/ui/shine-border";
+import { Skeleton } from "@/components/ui/skeleton";
+
 export function LoadingState() {
   return (
     <div className="space-y-4">
       <section className="relative overflow-hidden rounded-2xl border border-bw-border bg-[#1e2023] p-5 shadow-card md:p-6">
+        <ShineBorder
+          borderWidth={1}
+          duration={10}
+          shineColor={["#E23744", "#F59E0B", "#71D7CF"]}
+        />
         <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-bw-accent-soft/10 blur-[80px]" />
 
         <div className="relative z-10 flex flex-col justify-between gap-5 md:flex-row md:items-center">
@@ -15,9 +24,9 @@ export function LoadingState() {
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-bw-accent-soft/20 px-2 py-0.5 font-display text-[11px] font-bold uppercase tracking-wide text-bw-accent-soft">
+                <Badge className="h-auto rounded-full bg-bw-accent-soft/20 px-2 py-0.5 font-display text-[11px] font-bold uppercase tracking-wide text-bw-accent-soft hover:bg-bw-accent-soft/20">
                   Inference active
-                </span>
+                </Badge>
               </div>
               <h2 className="mt-1 font-display text-lg font-bold text-bw-text md:text-xl">
                 Filtering matches · Asking the AI…
@@ -88,30 +97,37 @@ export function LoadingState() {
             className="relative overflow-hidden rounded-2xl border border-bw-border bg-bw-surface p-5"
             style={{ animationDelay: `${i * 150}ms` }}
           >
-            <div className="mb-3 flex items-center justify-between gap-4">
+            {i === 0 ? (
+              <ShineBorder
+                borderWidth={1}
+                duration={14}
+                shineColor={["#E23744", "#ff535a", "#F59E0B"]}
+              />
+            ) : null}
+            <div className="relative z-[1] mb-3 flex items-center justify-between gap-4">
               <div className="flex w-3/5 items-center gap-2">
-                <div className="shimmer h-6 w-3/4 rounded-md" />
-                <div className="shimmer h-4 w-16 rounded" />
+                <Skeleton className="shimmer h-6 w-3/4 rounded-md bg-bw-high" />
+                <Skeleton className="shimmer h-4 w-16 rounded bg-bw-high" />
               </div>
-              <div className="shimmer h-7 w-16 rounded-full" />
+              <Skeleton className="shimmer h-7 w-16 rounded-full bg-bw-high" />
             </div>
-            <div className="mb-4 flex items-center gap-2">
-              <div className="shimmer h-3.5 w-28 rounded" />
-              <div className="shimmer h-3.5 w-20 rounded" />
+            <div className="relative z-[1] mb-4 flex items-center gap-2">
+              <Skeleton className="shimmer h-3.5 w-28 rounded bg-bw-high" />
+              <Skeleton className="shimmer h-3.5 w-20 rounded bg-bw-high" />
             </div>
-            <div className="relative mb-4 overflow-hidden rounded-xl bg-[#1e2023] p-4">
+            <div className="relative z-[1] mb-4 overflow-hidden rounded-xl bg-[#1e2023] p-4">
               <div className="absolute bottom-0 left-0 top-0 w-1 bg-bw-accent/70" />
               <div className="mb-2 flex items-center gap-1.5">
                 <span className="h-2.5 w-2.5 animate-ping rounded-full bg-bw-accent/50" />
-                <div className="shimmer h-3 w-24 rounded" />
+                <Skeleton className="shimmer h-3 w-24 rounded bg-bw-highest" />
               </div>
-              <div className="shimmer mb-2 h-3 w-full rounded" />
-              <div className="shimmer h-3 w-4/5 rounded" />
+              <Skeleton className="shimmer mb-2 h-3 w-full rounded bg-bw-highest" />
+              <Skeleton className="shimmer h-3 w-4/5 rounded bg-bw-highest" />
             </div>
-            <div className="flex gap-2">
-              <div className="shimmer h-6 w-20 rounded-full" />
-              <div className="shimmer h-6 w-24 rounded-full" />
-              <div className="shimmer h-6 w-16 rounded-full" />
+            <div className="relative z-[1] flex gap-2">
+              <Skeleton className="shimmer h-6 w-20 rounded-full bg-bw-high" />
+              <Skeleton className="shimmer h-6 w-24 rounded-full bg-bw-high" />
+              <Skeleton className="shimmer h-6 w-16 rounded-full bg-bw-high" />
             </div>
           </article>
         ))}

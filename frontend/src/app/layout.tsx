@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
+import { Manrope, Plus_Jakarta_Sans, Inter } from "next/font/google";
 
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const display = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -16,7 +19,7 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "BiteWise · Bangalore AI Recommender",
+  title: "BiteWise · Bangalore Dining Intelligence",
   description:
     "AI-powered restaurant recommendations for Bangalore — filter by locality, budget, cuisine, and rating.",
 };
@@ -27,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={cn("dark", "font-sans", inter.variable)}>
       <body className={`${display.variable} ${body.variable} font-body antialiased`}>
         {children}
       </body>

@@ -1,7 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ShineBorder } from "@/components/ui/shine-border";
+import { Textarea } from "@/components/ui/textarea";
 import type { BudgetLevel, OptionsResponse, RecommendRequest } from "@/lib/types";
 
 type Props = {
@@ -25,6 +31,11 @@ const DEFAULT_BUDGET_LABELS: Record<string, string> = {
   high: "High · ₹1,000+ for two",
 };
 
+const fieldClass =
+  "h-11 w-full appearance-none rounded-lg border border-bw-border bg-[#1e2023] px-3.5 text-sm text-bw-text shadow-none outline-none focus-visible:border-bw-accent-bright focus-visible:ring-2 focus-visible:ring-bw-accent/30 dark:bg-[#1e2023]";
+
+const CUISINE_CHIP_LIMIT = 8;
+
 export function PreferenceForm({ options, busy, onSubmit }: Props) {
   const budgetLabels = { ...DEFAULT_BUDGET_LABELS, ...options.budget_labels };
   const [location, setLocation] = useState(options.locations[0] || options.city_option);
@@ -34,16 +45,59 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
   const [topK, setTopK] = useState(Math.min(5, options.top_k_max));
   const [prefsText, setPrefsText] = useState("");
   const [dryRun, setDryRun] = useState(false);
+  const [cuisineShowAll, setCuisineShowAll] = useState(false);
+  const [locationQuery, setLocationQuery] = useState(location);
+  const [locationOpen, setLocationOpen] = useState(false);
+  const [cuisineQuery, setCuisineQuery] = useState("");
+  const localityBoxRef = useRef<HTMLDivElement | null>(null);
+
+  const allCuisines = options.cuisines;
+
+  useEffect(() => {
+    if (!locationOpen) setLocationQuery(location);
+  }, [location, locationOpen]);
+
+  useEffect(() => {
+    const onPointerDown = (event: MouseEvent) => {
+      if (!localityBoxRef.current?.contains(event.target as Node)) {
+        setLocationOpen(false);
+        setLocationQuery(location);
+      }
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [location]);
+
+  const filteredLocations = useMemo(() => {
+    const q = locationQuery.trim().toLowerCase();
+    if (!q || q === location.toLowerCase()) return options.locations;
+    return options.locations.filter((loc) => loc.toLowerCase().includes(q));
+  }, [options.locations, locationQuery, location]);
+
+  const filteredCuisines = useMemo(() => {
+    const q = cuisineQuery.trim().toLowerCase();
+    if (!q) return allCuisines;
+    return allCuisines.filter((c) => c.toLowerCase().includes(q));
+  }, [allCuisines, cuisineQuery]);
+
+  const isCuisineSearching = cuisineQuery.trim().length > 0;
+  const hasMoreCuisines =
+    !isCuisineSearching && filteredCuisines.length > CUISINE_CHIP_LIMIT;
 
   const cuisineChips = useMemo(() => {
-    const list = options.cuisines.slice(0, 14);
-    if (!list.includes(cuisine) && cuisine) return [cuisine, ...list].slice(0, 14);
+    const source = filteredCuisines;
+    const limit =
+      cuisineShowAll || isCuisineSearching ? source.length : CUISINE_CHIP_LIMIT;
+    const list = source.slice(0, limit);
+    if (cuisine && !list.includes(cuisine) && !isCuisineSearching) {
+      return [cuisine, ...list.filter((c) => c !== cuisine)];
+    }
     return list;
-  }, [options.cuisines, cuisine]);
+  }, [filteredCuisines, cuisine, cuisineShowAll, isCuisineSearching]);
 
   return (
     <form
-      className="relative overflow-hidden rounded-xl border border-bw-border bg-bw-surface p-5 shadow-card md:p-6"
+      className="relative min-h-[640px] w-full overflow-hidden rounded-xl border border-bw-border bg-bw-surface p-7 shadow-card md:min-h-[720px] md:p-9"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit({
@@ -57,66 +111,129 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
         });
       }}
     >
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-bw-accent-bright via-bw-amber-bright to-bw-teal-deep" />
+      <ShineBorder
+        borderWidth={1}
+        duration={12}
+        shineColor={["#E23744", "#F59E0B", "#71D7CF"]}
+      />
+      <div className="absolute inset-x-0 top-0 z-[1] h-1 bg-gradient-to-r from-bw-accent-bright via-bw-amber-bright to-bw-teal-deep" />
 
-      <div className="mb-5 flex items-start justify-between gap-3">
-        <div>
-          <h2 className="font-display text-base font-semibold text-bw-text">
-            Preference engine
-          </h2>
-        </div>
-        <span className="hidden rounded-full bg-bw-high px-2.5 py-1 font-display text-[11px] font-bold text-bw-accent-soft sm:inline">
-          Interactive
-        </span>
+      <div className="relative z-[1] mb-5">
+        <h2 className="font-display text-xl font-bold tracking-tight text-bw-text md:text-2xl">
+          Preference engine
+        </h2>
       </div>
 
-      <div className="flex flex-col gap-5">
+      <div className="relative z-[1] flex flex-col gap-5">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between gap-2">
-              <label
-                htmlFor="localitySelect"
-                className="flex items-center gap-1.5 font-display text-xs font-semibold text-bw-text"
+            <Label
+              htmlFor="localityCombobox"
+              className="gap-1.5 font-display text-xs font-semibold text-bw-text"
+            >
+              <span className="material-symbols-outlined text-[16px] text-bw-accent-bright">
+                location_on
+              </span>
+              Bangalore localities
+            </Label>
+            <div className="relative" ref={localityBoxRef}>
+              <span className="material-symbols-outlined pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[18px] text-bw-muted">
+                search
+              </span>
+              <Input
+                id="localityCombobox"
+                role="combobox"
+                aria-expanded={locationOpen}
+                aria-controls="locality-listbox"
+                aria-autocomplete="list"
+                value={locationQuery}
+                onFocus={() => setLocationOpen(true)}
+                onChange={(e) => {
+                  setLocationQuery(e.target.value);
+                  setLocationOpen(true);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    setLocationOpen(false);
+                    setLocationQuery(location);
+                  }
+                  if (e.key === "Enter" && filteredLocations[0]) {
+                    e.preventDefault();
+                    setLocation(filteredLocations[0]);
+                    setLocationQuery(filteredLocations[0]);
+                    setLocationOpen(false);
+                  }
+                }}
+                placeholder="Search or pick a locality…"
+                className="h-11 rounded-lg border-bw-border bg-[#1e2023] pl-10 pr-10 text-sm text-bw-text placeholder:text-bw-placeholder focus-visible:border-bw-accent-bright focus-visible:ring-bw-accent/30 dark:bg-[#1e2023]"
+              />
+              <button
+                type="button"
+                aria-label={locationOpen ? "Close localities" : "Open localities"}
+                onClick={() => setLocationOpen((open) => !open)}
+                className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-bw-muted hover:bg-bw-high hover:text-bw-text"
               >
-                <span className="material-symbols-outlined text-[16px] text-bw-accent-bright">
-                  location_on
+                <span className="material-symbols-outlined text-[20px]">
+                  {locationOpen ? "expand_less" : "expand_more"}
                 </span>
-                Bangalore localities
-              </label>
-              <span className="font-display text-[11px] font-bold text-bw-teal">
-                Geo-weighted
-              </span>
+              </button>
+
+              {locationOpen ? (
+                <ul
+                  id="locality-listbox"
+                  role="listbox"
+                  className="absolute z-20 mt-1 max-h-52 w-full overflow-auto rounded-lg border border-bw-border bg-[#1e2023] py-1 shadow-card"
+                >
+                  {filteredLocations.length === 0 ? (
+                    <li className="px-3 py-2 text-sm text-bw-muted">
+                      No localities match “{locationQuery.trim()}”
+                    </li>
+                  ) : (
+                    filteredLocations.map((loc) => {
+                      const selected = loc === location;
+                      return (
+                        <li key={loc} role="option" aria-selected={selected}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setLocation(loc);
+                              setLocationQuery(loc);
+                              setLocationOpen(false);
+                            }}
+                            className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition hover:bg-bw-high ${
+                              selected
+                                ? "bg-bw-high/80 font-semibold text-bw-accent-soft"
+                                : "text-bw-text"
+                            }`}
+                          >
+                            {selected ? (
+                              <span className="material-symbols-outlined text-[16px] text-bw-accent-soft">
+                                check
+                              </span>
+                            ) : (
+                              <span className="material-symbols-outlined text-[16px] text-bw-muted">
+                                location_on
+                              </span>
+                            )}
+                            <span className="truncate">{loc}</span>
+                          </button>
+                        </li>
+                      );
+                    })
+                  )}
+                </ul>
+              ) : null}
             </div>
-            <div className="relative">
-              <select
-                id="localitySelect"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="h-11 w-full appearance-none rounded-lg border border-bw-border bg-[#1e2023] px-3.5 pr-10 text-sm text-bw-text outline-none focus:border-bw-accent-bright"
-              >
-                {options.locations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </select>
-              <span className="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[20px] text-bw-muted">
-                expand_more
-              </span>
-            </div>
-            <p className="text-xs text-bw-muted">
-              Hard filter on locality before AI ranking
-            </p>
           </div>
 
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between gap-2">
-              <span className="flex items-center gap-1.5 font-display text-xs font-semibold text-bw-text">
+              <Label className="gap-1.5 font-display text-xs font-semibold text-bw-text">
                 <span className="material-symbols-outlined text-[16px] text-bw-amber">
                   payments
                 </span>
                 Budget for two
-              </span>
+              </Label>
               <span className="font-display text-[11px] font-bold text-bw-muted">
                 {BUDGET_META[budget].short}
               </span>
@@ -125,22 +242,23 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
               {(["low", "medium", "high"] as BudgetLevel[]).map((b) => {
                 const active = budget === b;
                 return (
-                  <button
+                  <Button
                     key={b}
                     type="button"
+                    variant="ghost"
                     onClick={() => setBudget(b)}
-                    className={`flex h-full flex-col items-center justify-center rounded-md font-display text-[11px] font-bold transition ${
-                      active
-                        ? "bg-bw-highest text-bw-accent-soft shadow-sm"
-                        : "text-bw-muted hover:text-bw-text"
-                    }`}
                     title={budgetLabels[b]}
+                    className={`flex h-full flex-col items-center justify-center rounded-md font-display text-[11px] font-bold ${
+                      active
+                        ? "bg-bw-highest text-bw-accent-soft shadow-sm hover:bg-bw-highest hover:text-bw-accent-soft"
+                        : "text-bw-muted hover:bg-transparent hover:text-bw-text"
+                    }`}
                   >
                     <span>{BUDGET_META[b].label}</span>
                     <span className="text-[10px] font-semibold opacity-80">
                       {BUDGET_META[b].hint}
                     </span>
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -148,52 +266,101 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span className="flex items-center gap-1.5 font-display text-xs font-semibold text-bw-text">
+          <Label
+            htmlFor="cuisineSearch"
+            className="gap-1.5 font-display text-xs font-semibold text-bw-text"
+          >
             <span className="material-symbols-outlined text-[16px] text-bw-teal">
               restaurant_menu
             </span>
             Cuisine
-          </span>
-          <div className="flex flex-wrap gap-2 pt-1">
-            {cuisineChips.map((c) => {
-              const selected = cuisine === c;
-              return (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setCuisine(c)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-display text-xs font-semibold transition ${
-                    selected
-                      ? "bg-bw-accent-bright/20 text-bw-text ring-1 ring-bw-accent"
-                      : "bg-[#1e2023] text-bw-muted hover:text-bw-text"
-                  }`}
-                >
-                  {selected ? (
-                    <span className="material-symbols-outlined text-[16px] text-bw-accent-soft">
-                      check
-                    </span>
-                  ) : null}
-                  <span>{c}</span>
-                </button>
-              );
-            })}
+          </Label>
+          <div className="relative">
+            <span className="material-symbols-outlined pointer-events-none absolute left-3 top-1/2 z-[1] -translate-y-1/2 text-[18px] text-bw-muted">
+              search
+            </span>
+            <Input
+              id="cuisineSearch"
+              value={cuisineQuery}
+              onChange={(e) => {
+                setCuisineQuery(e.target.value);
+                if (e.target.value.trim()) setCuisineShowAll(true);
+              }}
+              placeholder="Search cuisine…"
+              className="h-10 rounded-lg border-bw-border bg-[#1e2023] pl-10 pr-3 text-sm text-bw-text placeholder:text-bw-placeholder focus-visible:border-bw-accent-bright focus-visible:ring-bw-accent/30 dark:bg-[#1e2023]"
+            />
           </div>
+          <div className="flex flex-wrap gap-2 pt-1">
+            {cuisineChips.length === 0 ? (
+              <p className="text-xs text-bw-muted">No cuisines match “{cuisineQuery.trim()}”.</p>
+            ) : (
+              cuisineChips.map((c) => {
+                const selected = cuisine === c;
+                return (
+                  <Button
+                    key={c}
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setCuisine(c);
+                      setCuisineQuery("");
+                      setCuisineShowAll(false);
+                    }}
+                    className={`h-auto inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-display text-xs font-semibold ${
+                      selected
+                        ? "bg-bw-accent-bright/20 text-bw-text ring-1 ring-bw-accent hover:bg-bw-accent-bright/20 hover:text-bw-text"
+                        : "bg-[#1e2023] text-bw-muted hover:bg-[#1e2023] hover:text-bw-text"
+                    }`}
+                  >
+                    {selected ? (
+                      <span className="material-symbols-outlined text-[16px] text-bw-accent-soft">
+                        check
+                      </span>
+                    ) : null}
+                    <span>{c}</span>
+                  </Button>
+                );
+              })
+            )}
+            {hasMoreCuisines ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setCuisineShowAll((open) => !open)}
+                className="h-auto inline-flex items-center gap-1 rounded-full border border-dashed border-bw-border bg-transparent px-3 py-1.5 font-display text-xs font-semibold text-bw-teal hover:border-bw-accent hover:bg-bw-high/40 hover:text-bw-accent-soft"
+              >
+                <span>{cuisineShowAll ? "Show less" : "View more"}</span>
+                <span className="material-symbols-outlined text-[16px]">
+                  {cuisineShowAll ? "expand_less" : "expand_more"}
+                </span>
+              </Button>
+            ) : null}
+          </div>
+          {isCuisineSearching ? (
+            <p className="text-xs text-bw-muted">
+              {filteredCuisines.length} match
+              {filteredCuisines.length === 1 ? "" : "es"} · selected: {cuisine}
+            </p>
+          ) : null}
         </div>
 
         <div className="grid grid-cols-1 items-center gap-5 rounded-xl bg-[#1e2023] p-4 md:grid-cols-12">
           <div className="flex flex-col gap-2 md:col-span-8">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="flex items-center gap-1 font-display text-xs font-semibold text-bw-text">
+              <Label className="gap-1 font-display text-xs font-semibold text-bw-text">
                 <span className="material-symbols-outlined filled text-[16px] text-bw-amber">
                   star
                 </span>
                 Rating
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded bg-bw-high px-2 py-0.5">
-                <span className="font-display text-xs font-bold text-bw-amber">
-                  {minRating.toFixed(1)}★
-                </span>
-              </span>
+              </Label>
+              <Badge
+                variant="secondary"
+                className="h-auto rounded bg-bw-high px-2 py-0.5 font-display text-xs font-bold text-bw-amber hover:bg-bw-high"
+              >
+                {minRating.toFixed(1)}★
+              </Badge>
             </div>
             <input
               type="range"
@@ -214,17 +381,18 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
 
           <div className="flex flex-col gap-2 md:col-span-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="flex items-center gap-1 font-display text-xs font-semibold text-bw-text">
+              <Label className="gap-1 font-display text-xs font-semibold text-bw-text">
                 <span className="material-symbols-outlined text-[16px] text-bw-teal">
                   format_list_numbered
                 </span>
                 Top K results
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded bg-bw-high px-2 py-0.5">
-                <span className="font-display text-xs font-bold text-bw-teal">
-                  {topK}
-                </span>
-              </span>
+              </Label>
+              <Badge
+                variant="secondary"
+                className="h-auto rounded bg-bw-high px-2 py-0.5 font-display text-xs font-bold text-bw-teal hover:bg-bw-high"
+              >
+                {topK}
+              </Badge>
             </div>
             <input
               type="range"
@@ -245,32 +413,30 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
 
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between gap-2">
-            <label
+            <Label
               htmlFor="promptPreferences"
-              className="flex items-center gap-1.5 font-display text-xs font-semibold text-bw-text"
+              className="gap-1.5 font-display text-xs font-semibold text-bw-text"
             >
               <span className="material-symbols-outlined text-[16px] text-bw-teal">
                 psychology
               </span>
               Natural language nuance & vibes
-            </label>
+            </Label>
             <span className="font-display text-[11px] font-bold text-bw-muted">
               Optional
             </span>
           </div>
-          <div className="relative">
-            <textarea
-              id="promptPreferences"
-              rows={3}
-              value={prefsText}
-              onChange={(e) => setPrefsText(e.target.value)}
-              placeholder="e.g. family-friendly, quiet ambience, craft beer, quick service"
-              className="w-full resize-none rounded-lg border border-bw-border bg-[#1e2023] p-3 text-sm text-bw-text outline-none placeholder:text-bw-placeholder focus:border-bw-accent-bright"
-            />
-          </div>
+          <Textarea
+            id="promptPreferences"
+            rows={3}
+            value={prefsText}
+            onChange={(e) => setPrefsText(e.target.value)}
+            placeholder="e.g. family-friendly, quiet ambience, craft beer, quick service"
+            className="min-h-[84px] resize-none rounded-lg border-bw-border bg-[#1e2023] p-3 text-sm text-bw-text placeholder:text-bw-placeholder focus-visible:border-bw-accent-bright focus-visible:ring-bw-accent/30 dark:bg-[#1e2023]"
+          />
         </div>
 
-        <label className="flex items-center gap-2 text-sm text-bw-muted">
+        <Label className="gap-2 text-sm font-normal text-bw-muted">
           <input
             type="checkbox"
             checked={dryRun}
@@ -278,10 +444,10 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
             className="h-[18px] w-[18px] accent-bw-accent"
           />
           Offline Search
-        </label>
+        </Label>
 
-        <div className="flex flex-col items-stretch justify-between gap-4 pt-1 sm:flex-row sm:items-center">
-          <p className="flex items-start gap-2 text-xs text-bw-muted sm:max-w-sm">
+        <div className="flex flex-col gap-4 pt-1">
+          <p className="flex items-start gap-2 text-xs text-bw-muted">
             <span className="material-symbols-outlined text-[18px] text-bw-amber">
               bolt
             </span>
@@ -293,16 +459,17 @@ export function PreferenceForm({ options, busy, onSubmit }: Props) {
               explanations.
             </span>
           </p>
-          <button
+          <Button
             type="submit"
             disabled={busy}
-            className="flex h-12 w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-bw-accent-bright px-6 font-display text-sm font-semibold text-[#5b000e] shadow-lg transition hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+            size="lg"
+            className="h-12 w-full gap-2 rounded-xl bg-bw-accent-bright px-6 font-display text-sm font-semibold text-[#5b000e] shadow-lg hover:bg-bw-accent-bright hover:brightness-110 active:scale-[0.98] disabled:opacity-60"
           >
             <span>{busy ? "Filtering · Asking AI…" : "Get AI Recommendations"}</span>
             <span className="material-symbols-outlined text-[18px]">
               {busy ? "progress_activity" : "arrow_forward"}
             </span>
-          </button>
+          </Button>
         </div>
       </div>
     </form>

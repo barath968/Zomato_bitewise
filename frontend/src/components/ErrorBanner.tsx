@@ -1,3 +1,7 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ShineBorder } from "@/components/ui/shine-border";
+
 type Props = {
   title: string;
   message: string;
@@ -15,6 +19,11 @@ export function ErrorBanner({
 }: Props) {
   return (
     <div className="relative overflow-hidden rounded-xl border border-bw-border bg-bw-surface p-5 shadow-card md:p-8">
+      <ShineBorder
+        borderWidth={1}
+        duration={12}
+        shineColor={["#E23744", "#ff535a", "#F59E0B"]}
+      />
       <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-bw-accent-bright/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-24 h-60 w-60 rounded-full bg-bw-amber-bright/10 blur-2xl" />
 
@@ -37,9 +46,9 @@ export function ErrorBanner({
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded bg-bw-error-bg px-2 py-0.5 font-display text-[11px] font-bold text-[#ffdad6]">
+            <Badge className="h-auto rounded bg-bw-error-bg px-2 py-0.5 font-display text-[11px] font-bold text-[#ffdad6] hover:bg-bw-error-bg">
               Service interruption
-            </span>
+            </Badge>
             <span className="font-display text-[11px] font-semibold text-bw-muted">
               Recommendation engine
             </span>
@@ -62,26 +71,27 @@ export function ErrorBanner({
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             {onRetry ? (
-              <button
+              <Button
                 type="button"
                 onClick={onRetry}
-                className="flex items-center gap-2 rounded-lg bg-bw-accent-bright px-5 py-2.5 font-display text-sm font-semibold text-[#410007] shadow-md transition hover:brightness-110 active:scale-95"
+                className="h-auto gap-2 rounded-lg bg-bw-accent-bright px-5 py-2.5 font-display text-sm font-semibold text-[#410007] shadow-md hover:bg-bw-accent-bright hover:brightness-110 active:scale-95"
               >
                 <span className="material-symbols-outlined text-[18px]">sync</span>
                 Retry recommendation
-              </button>
+              </Button>
             ) : null}
             {onDryRunRetry ? (
-              <button
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={onDryRunRetry}
-                className="flex items-center gap-2 rounded-lg bg-bw-highest px-5 py-2.5 font-display text-sm font-semibold text-bw-text transition hover:bg-[#37393d]"
+                className="h-auto gap-2 rounded-lg bg-bw-highest px-5 py-2.5 font-display text-sm font-semibold text-bw-text hover:bg-[#37393d]"
               >
                 <span className="material-symbols-outlined text-[18px] text-bw-amber">
                   dataset
                 </span>
                 Fast heuristic mode (dry run)
-              </button>
+              </Button>
             ) : null}
           </div>
         </div>
