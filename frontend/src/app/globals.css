@@ -93,21 +93,4 @@ body {
   * {
     border-color: var(--border);
   }
-  .theme {
-    --animate-shine: shine var(--duration) infinite linear;
-  }
-}
-
-@theme inline {
-  @keyframes shine {
-  0% {
-    background-position: 0% 0%;
-    }
-  50% {
-    background-position: 100% 100%;
-    }
-  to {
-    background-position: 0% 0%;
-    }
-  }
 }

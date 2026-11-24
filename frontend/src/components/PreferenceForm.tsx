@@ -31,9 +31,6 @@ const DEFAULT_BUDGET_LABELS: Record<string, string> = {
   high: "High · ₹1,000+ for two",
 };
 
-const fieldClass =
-  "h-11 w-full appearance-none rounded-lg border border-bw-border bg-[#1e2023] px-3.5 text-sm text-bw-text shadow-none outline-none focus-visible:border-bw-accent-bright focus-visible:ring-2 focus-visible:ring-bw-accent/30 dark:bg-[#1e2023]";
-
 const CUISINE_CHIP_LIMIT = 8;
 
 export function PreferenceForm({ options, busy, onSubmit }: Props) {
