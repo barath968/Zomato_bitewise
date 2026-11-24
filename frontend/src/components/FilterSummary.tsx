@@ -1,7 +1,18 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ShineBorder } from "@/components/ui/shine-border";
-import type { RecommendRequest, RecommendationResponse } from "@/lib/types";
+import type {
+  BudgetLevel,
+  RecommendRequest,
+  RecommendationResponse,
+} from "@/lib/types";
+
+/** Compact tier + range for summary chips (matches preprocess cutoffs). */
+const BUDGET_SUMMARY: Record<BudgetLevel, string> = {
+  low: "Low · under ₹500",
+  medium: "Medium · ₹500–1,000",
+  high: "High · ₹1,000+",
+};
 
 type Props = {
   prefs: RecommendRequest;
@@ -11,6 +22,15 @@ type Props = {
   onReset?: () => void;
 };
 
+function budgetSummaryLabel(
+  budget: BudgetLevel,
+  budgetLabels?: Record<string, string>,
+): string {
+  if (BUDGET_SUMMARY[budget]) return BUDGET_SUMMARY[budget];
+  const raw = budgetLabels?.[budget] || budget;
+  return raw.replace(/\s*for two\s*$/i, "").trim();
+}
+
 export function FilterSummary({
   prefs,
   result,
@@ -18,9 +38,15 @@ export function FilterSummary({
   onEdit,
   onReset,
 }: Props) {
-  const budget = budgetLabels?.[prefs.budget] || prefs.budget;
+  const budget = budgetSummaryLabel(prefs.budget, budgetLabels);
   const cuisine = prefs.cuisine || "Any cuisine";
   const meta = result.meta;
+  const parts = [
+    prefs.location,
+    budget,
+    `Min ★${prefs.min_rating.toFixed(1)}+`,
+    cuisine,
+  ];
 
   return (
     <section className="relative mb-5 overflow-hidden rounded-xl border border-bw-border bg-bw-surface p-4 shadow-md md:p-5">
@@ -31,17 +57,23 @@ export function FilterSummary({
         className="opacity-50"
       />
 
-      <div className="relative z-[1] flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
-        <div className="flex min-w-0 items-start gap-3 sm:items-center">
+      <div className="relative z-[1] flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
+        <div className="flex min-w-0 flex-1 items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-bw-high text-bw-accent-soft">
             <span className="material-symbols-outlined text-[22px]">tune</span>
           </div>
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="truncate font-display text-sm font-semibold text-bw-text">
-                {prefs.location} · {budget} · Min ★{prefs.min_rating.toFixed(1)}+ ·{" "}
-                {cuisine}
-              </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-display text-sm font-semibold text-bw-text">
+              {parts.map((part, i) => (
+                <span key={`${part}-${i}`} className="inline-flex items-center gap-2">
+                  {i > 0 ? (
+                    <span className="text-bw-placeholder" aria-hidden>
+                      ·
+                    </span>
+                  ) : null}
+                  <span>{part}</span>
+                </span>
+              ))}
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-bw-teal">
               <span className="flex items-center gap-1">
