@@ -21,8 +21,17 @@ export function AppShell({ children }: Props) {
           />
 
           <div className="relative z-[1] flex min-w-0 items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-bw-accent to-bw-accent-bright font-display text-base font-extrabold text-white shadow-[0_0_20px_rgba(226,55,68,0.35)]">
-              B
+            <div
+              className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-bw-accent to-bw-accent-bright text-white shadow-[0_0_20px_rgba(226,55,68,0.35)]"
+              aria-hidden
+              title="BiteWise · cuisine finder"
+            >
+              <span className="material-symbols-outlined absolute left-[5px] top-0.5 text-[12px] leading-none opacity-95">
+                search
+              </span>
+              <span className="material-symbols-outlined mt-1.5 text-[17px] leading-none">
+                restaurant
+              </span>
             </div>
             <div className="min-w-0">
               <div className="font-display text-base font-bold leading-none tracking-tight text-bw-text">
